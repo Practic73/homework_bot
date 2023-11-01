@@ -123,6 +123,8 @@ def main():
                 send_message(bot, message)
             else:
                 logger.debug('Изменений нет')
+        except telegram.error.TelegramError:
+            logger.error('Ошибка при взаимодействии с Телеграмм')
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
             if old_message != message:
