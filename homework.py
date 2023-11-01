@@ -23,7 +23,7 @@ TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 
 RETRY_PERIOD = 600
-ENDPOINT = os.getenv('ENDPOINT')
+ENDPOINT = 'https://practicum.yandex.ru/api/user_api/homework_statuses/'
 HEADERS = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
 
 HOMEWORK_VERDICTS = {
@@ -36,12 +36,11 @@ HOMEWORK_VERDICTS = {
 def check_tokens():
     """Проверка доступности переменных окружения."""
     environment_variables = {PRACTICUM_TOKEN, TELEGRAM_TOKEN,
-                             TELEGRAM_CHAT_ID, ENDPOINT}
-
+                             TELEGRAM_CHAT_ID}
     for variable in environment_variables:
         if variable is None:
-            logger.critical('Переменная окружения недоступна')
-            sys.exit()
+            logger.critical('Переменные окружения не обнаружены')
+            sys.exit(1)
 
 
 def send_message(bot, message):
@@ -127,11 +126,12 @@ def main():
             logger.error('Ошибка при взаимодействии с Телеграмм')
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
+            logger.error(message)
             if old_message != message:
                 send_message(bot, message)
-            logger.error(message)
         finally:
             timestamp = int(time.time())
+
         time.sleep(RETRY_PERIOD)
 
 
