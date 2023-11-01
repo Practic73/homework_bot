@@ -37,10 +37,11 @@ def check_tokens():
     """Проверка доступности переменных окружения."""
     environment_variables = {PRACTICUM_TOKEN, TELEGRAM_TOKEN,
                              TELEGRAM_CHAT_ID, ENDPOINT}
+
     for variable in environment_variables:
         if variable is None:
             logger.critical('Переменная окружения недоступна')
-            raise ValueError('Переменная окружения недоступна')
+            sys.exit()
 
 
 def send_message(bot, message):
