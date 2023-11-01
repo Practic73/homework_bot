@@ -18,12 +18,12 @@ formatter = logging.Formatter(
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-PRACTICUM_TOKEN = os.getenv('PRACTICUM_TOKEN')  # из яндекса
-TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')  # из БотФазер
-TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')  # Из телеги айди аккаунта
+PRACTICUM_TOKEN = os.getenv('PRACTICUM_TOKEN')
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
+TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 
 RETRY_PERIOD = 600
-ENDPOINT = os.getenv('ENDPOINT')   # Ссылка откуда брать информацию
+ENDPOINT = os.getenv('ENDPOINT')
 HEADERS = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
 
 HOMEWORK_VERDICTS = {
@@ -78,12 +78,12 @@ def get_api_answer(timestamp):
 
 
 def check_response(response):
-    """Проверка ответ API на соответствие документации."""
+    """Проверка ответа API на соответствие документации."""
     try:
         response['homeworks']
         response['current_date']
     except KeyError:
-        raise KeyError('Обязательных ключей не обнаружено')
+        raise KeyError('Ошибка. Обязательных ключей не обнаружено')
     if type(response) is not dict:
         raise TypeError(
             f'В ответе API структура данных не соответствует ожиданиям.'
