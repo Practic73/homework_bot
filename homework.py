@@ -131,8 +131,7 @@ def main():
                 send_message(bot, message)
         finally:
             timestamp = int(time.time())
-
-        time.sleep(RETRY_PERIOD)
+            time.sleep(RETRY_PERIOD)
 
 
 if __name__ == '__main__':
