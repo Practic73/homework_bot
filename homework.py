@@ -77,6 +77,15 @@ def get_api_answer(timestamp):
     return homework_statuses.json()
 
 
+def check_keys_in_response(keys_dictionary):
+    """Проверяет наличие значений в словаре."""
+    not_found_keys_list = []
+    for key, value in keys_dictionary.items():
+        if value is None:
+            not_found_keys_list.append(key)
+    return not_found_keys_list
+
+
 def check_response(response):
     """Проверка ответа API на соответствие документации."""
     if not isinstance(response, dict):
@@ -89,15 +98,10 @@ def check_response(response):
         'homeworks': homeworks,
         'current_date': response.get('current_date'),
     }
-    keys_found = True
-    not_found_keys_list = []
-    for key, value in keys_in_response.items():
-        if value is None:
-            not_found_keys_list.append(key)
-            keys_found = False
-    if not keys_found:
+    result_check_keys = check_keys_in_response(keys_in_response)
+    if result_check_keys:
         raise KeyError(f'Обязательные ключи '
-                       f'не обнаружены: {not_found_keys_list}')
+                       f'не обнаружены: {result_check_keys}')
     if not isinstance(homeworks, list):
         raise TypeError(
             f'В ответе API структура данных не соответствует ожиданиям.'
@@ -113,15 +117,10 @@ def parse_status(homework):
         'homework_name': homework_name,
         'status': status,
     }
-    keys_found = True
-    not_found_keys_list = []
-    for key, value in keys_in_homework.items():
-        if value is None:
-            not_found_keys_list.append(key)
-            keys_found = False
-    if not keys_found:
+    result_check_keys = check_keys_in_response(keys_in_homework)
+    if result_check_keys:
         raise KeyError(f'Обязательные ключи '
-                       f'не обнаружены: {not_found_keys_list}')
+                       f'не обнаружены: {result_check_keys}')
     if status not in HOMEWORK_VERDICTS:
         raise KeyError(f'Полученный статус {status} '
                        'не обнаружен в списке допустимых')
