@@ -81,13 +81,10 @@ def check_response(response):
             f'В ответе API структура данных не соответствует ожиданиям.'
             f'Тип данных ответа - {type(response)}'
         )
-    keys_in_response = {
-        'homeworks': response.get('homeworks'),
-        'current_date': response.get('current_date'),
-    }
+    keys_in_response = ['homeworks', 'current_date']
     not_found_keys_list = []
-    for key, value in keys_in_response.items():
-        if value is None:
+    for key in keys_in_response:
+        if response.get(key) is None:
             not_found_keys_list.append(key)
     if not_found_keys_list:
         raise KeyError(f'Ожидаемые ключи '
@@ -102,17 +99,10 @@ def check_response(response):
 
 def parse_status(homework):
     """Проверка статуса домашней работы."""
-    keys_in_homework = {
-        'homework_name': homework.get('homework_name'),
-        'status': homework.get('status'),
-    }
-    not_found_keys_list = []
-    for key, value in keys_in_homework.items():
-        if value is None:
-            not_found_keys_list.append(key)
-    if not_found_keys_list:
-        raise KeyError(f'Ожидаемые ключи '
-                       f'не обнаружены: {not_found_keys_list}')
+    keys_in_homework = ['homework_name', 'status']
+    for key in keys_in_homework:
+        if homework.get(key) is None:
+            raise KeyError(f'Ожидаемый ключ {key} не обнаружен.')
     homework_name = homework.get('homework_name')
     status = homework.get('status')
     if status not in HOMEWORK_VERDICTS:
