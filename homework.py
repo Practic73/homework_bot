@@ -84,7 +84,7 @@ def check_response(response):
     keys_in_response = ['homeworks', 'current_date']
     not_found_keys_list = []
     for key in keys_in_response:
-        if response.get(key) is None:
+        if key not in response:
             not_found_keys_list.append(key)
     if not_found_keys_list:
         raise KeyError(f'Ожидаемые ключи '
@@ -101,7 +101,7 @@ def parse_status(homework):
     """Проверка статуса домашней работы."""
     keys_in_homework = ['homework_name', 'status']
     for key in keys_in_homework:
-        if homework.get(key) is None:
+        if key not in homework:
             raise KeyError(f'Ожидаемый ключ {key} не обнаружен.')
     homework_name = homework.get('homework_name')
     status = homework.get('status')
